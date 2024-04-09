@@ -1,0 +1,8 @@
+1.Pull postgres docker image
+    docker pull postgres:16-alpine
+2.Run postgres container
+    docker run --name postgres16  -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -p 5432:5432 -d postgres:16-alpine
+3.Run command inside a container
+    docker exec -it postgres16 psql -U root
+4.View container logs
+    docker logs postgres16
