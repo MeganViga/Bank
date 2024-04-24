@@ -1,0 +1,7 @@
+migrate create -ext sql -dir db/migrations -seq init_schema
+postgres://postgres:password@localhost:5432/example?sslmode=disable
+postgres://root:secret@localhost:5432/bank?sslmode=disable
+docker exec postgres16 createdb --username=root --owner=root bank
+docker exec postgres16 dropdb bank
+migrate -database 'postgres://root:secret@localhost:5432/bank?sslmode=disable' -path db/migrations -verbose up
+
