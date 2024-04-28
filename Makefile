@@ -8,4 +8,6 @@ imu:
 	 migrate -database 'postgres://root:secret@localhost:5432/bank?sslmode=disable' -path db/migrations -verbose up
 imd:
 	 migrate -database 'postgres://root:secret@localhost:5432/bank?sslmode=disable' -path db/migrations -verbose down
-.PHONY: createdb dropdb postgres imu imd
+sqlc:
+	sqlc generate	 
+.PHONY: createdb dropdb postgres imu imd sqlc
