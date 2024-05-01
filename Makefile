@@ -10,4 +10,8 @@ imd:
 	 migrate -database 'postgres://root:secret@localhost:5432/bank?sslmode=disable' -path db/migrations -verbose down
 sqlc:
 	sqlc generate	 
+test:
+	go test -v -cover ./...
+tclean:
+	go clean -testcache
 .PHONY: createdb dropdb postgres imu imd sqlc

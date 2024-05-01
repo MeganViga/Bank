@@ -1,0 +1,9 @@
+1.Create test code file like account_test.go for account.sql.go in sqlc directory
+2.Create Test functions inside that file like func TestCreateAccount(t *testing.T){....}
+3.Write Tests accordingly
+4.Create main_test.go file and connect to the get conn and pass it to New() of db package to get testQueries, so that we can use them in Test files
+
+*** Since we are using "pgx/v5" package, if a field is nullable, it will create field type pgtype.*
+so make sure all fields are not nullable***
+
+*** Create utils package and create random string and number generator functions ***

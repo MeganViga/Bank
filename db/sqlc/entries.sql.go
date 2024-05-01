@@ -7,8 +7,6 @@ package db
 
 import (
 	"context"
-
-	"github.com/jackc/pgx/v5/pgtype"
 )
 
 const createEntry = `-- name: CreateEntry :one
@@ -22,8 +20,8 @@ RETURNING id, account_id, amount, created_at
 `
 
 type CreateEntryParams struct {
-	AccountID pgtype.Int8 `json:"account_id"`
-	Amount    int64       `json:"amount"`
+	AccountID int64 `json:"account_id"`
+	Amount    int64 `json:"amount"`
 }
 
 func (q *Queries) CreateEntry(ctx context.Context, arg CreateEntryParams) (Entry, error) {
@@ -38,11 +36,10 @@ func (q *Queries) CreateEntry(ctx context.Context, arg CreateEntryParams) (Entry
 	return i, err
 }
 
-const deleteEntry = `-- name: DeleteEntry :one
+const deleteEntry = `-- name: DeleteEntry :exec
 
 DELETE FROM entries
 WHERE id = $1
-RETURNING id, account_id, amount, created_at
 `
 
 // -- name: UpdateAccount :one
@@ -52,16 +49,9 @@ RETURNING id, account_id, amount, created_at
 //
 // WHERE id = $1
 // RETURNING *;
-func (q *Queries) DeleteEntry(ctx context.Context, id int64) (Entry, error) {
-	row := q.db.QueryRow(ctx, deleteEntry, id)
-	var i Entry
-	err := row.Scan(
-		&i.ID,
-		&i.AccountID,
-		&i.Amount,
-		&i.CreatedAt,
-	)
-	return i, err
+func (q *Queries) DeleteEntry(ctx context.Context, id int64) error {
+	_, err := q.db.Exec(ctx, deleteEntry, id)
+	return err
 }
 
 const getEntryByID = `-- name: GetEntryByID :one

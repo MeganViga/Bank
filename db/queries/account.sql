@@ -24,7 +24,6 @@ UPDATE account
 WHERE id = $1
 RETURNING *;
 
--- name: DeleteAccount :one
+-- name: DeleteAccount :exec
 DELETE FROM account
-WHERE id = $1
-RETURNING *;
+WHERE id = $1;

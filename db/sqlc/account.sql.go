@@ -39,23 +39,14 @@ func (q *Queries) CreateAccount(ctx context.Context, arg CreateAccountParams) (A
 	return i, err
 }
 
-const deleteAccount = `-- name: DeleteAccount :one
+const deleteAccount = `-- name: DeleteAccount :exec
 DELETE FROM account
 WHERE id = $1
-RETURNING id, owner, balance, currency, created_at
 `
 
-func (q *Queries) DeleteAccount(ctx context.Context, id int64) (Account, error) {
-	row := q.db.QueryRow(ctx, deleteAccount, id)
-	var i Account
-	err := row.Scan(
-		&i.ID,
-		&i.Owner,
-		&i.Balance,
-		&i.Currency,
-		&i.CreatedAt,
-	)
-	return i, err
+func (q *Queries) DeleteAccount(ctx context.Context, id int64) error {
+	_, err := q.db.Exec(ctx, deleteAccount, id)
+	return err
 }
 
 const getAccountByID = `-- name: GetAccountByID :one
