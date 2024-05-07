@@ -1,0 +1,41 @@
+1. What is db transaction?
+    A single unit of work, that often madeup of multiple db operations
+    Example: Transfer of 10.Rs from account 1 to account comprises of 5 db operations
+                1. Create a transfer record of 10.Rs
+                2. Create Entry record for account 1 of -10.Rs
+                3. Create Entry record for account 2 of +10.Rs
+                4. Subtract 10.rs from account1 Balance
+                5. Add 10.rs to  account2 Balance
+
+2. Why do we need db transactions?
+    * To Provide reliable and consistent unit of work, even in caase of failure
+    * To Provide isolation b/w programs that access db concurrently
+
+3. To Provide above 2 points abd transaction should follow ACID?
+    * Atomicity --> Either all operations in transactions complete successfully or the transation fails and db is unchanged
+    * Consistency --> DB state should be valid after transaction and all constraints must be satisfied
+    * Isolation --> Concurrent transactions must not affect each other.
+    * Durability --> Data Written by Successful transaction must be recorded in persistent storage
+
+4. How to run db transaction?
+    For Success
+
+        BEGIN;
+        .....
+        .....
+        COMMIT;
+
+    For failure
+        BEGIN;
+        .....
+        .....
+        ROLLBACK;
+5. Create store.go in db package
+6. Create Store struct inside it, which has Queries to run db operations and db , which is Poolinterface with DBTX interface and Begin Tx function, so that we can run db transaction using it
+7. Here We created Poolinterface to Support *pgxpool.Pool, using pgx.Connect we are able to run concurrent transactions
+8.Create execTx func, where transaction begin, rollback and commit are Written
+9. Create TransferTx, where db operations of transaction are done, with TransferTxParams and TransferTxResult
+10. For not only, Transfer record, emtry db operations are done, actaul Balance update is not yet done since it involves other operations like Locking execTx
+11. Write test code in store_test.go, with concurrent executions using "go"
+
+
