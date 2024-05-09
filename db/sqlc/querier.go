@@ -9,6 +9,7 @@ import (
 )
 
 type Querier interface {
+	AddAccountBalance(ctx context.Context, arg AddAccountBalanceParams) (Account, error)
 	CreateAccount(ctx context.Context, arg CreateAccountParams) (Account, error)
 	CreateEntry(ctx context.Context, arg CreateEntryParams) (Entry, error)
 	CreateTransfer(ctx context.Context, arg CreateTransferParams) (Transfer, error)
@@ -26,6 +27,7 @@ type Querier interface {
 	// RETURNING *;
 	DeleteTransfer(ctx context.Context, id int64) error
 	GetAccountByID(ctx context.Context, id int64) (Account, error)
+	GetAccountByIDForUpdate(ctx context.Context, id int64) (Account, error)
 	GetEntryByID(ctx context.Context, id int64) (Entry, error)
 	GetTransferByID(ctx context.Context, id int64) (Transfer, error)
 	ListAccounts(ctx context.Context, arg ListAccountsParams) ([]Account, error)
